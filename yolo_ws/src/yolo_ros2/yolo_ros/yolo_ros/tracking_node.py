@@ -146,8 +146,21 @@ class TrackingNode(LifecycleNode):
         tracked_detections_msg.header = img_msg.header
 
         # convert image
-        cv_image = self.cv_bridge.imgmsg_to_cv2(img_msg, desired_encoding="bgr8")
-        cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+       # cv_image = self.cv_bridge.imgmsg_to_cv2(img_msg, desired_encoding="bgr8")
+       # cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+
+       # corregir encoding si es necesario
+        if img_msg.encoding == "8UC3":
+           # self.get_logger().warn("[TRACKING] encoding 8UC3 detectado. Forzando a bgr8.")
+            img_msg.encoding = "bgr8"
+
+        try:
+            cv_image = self.cv_bridge.imgmsg_to_cv2(img_msg, desired_encoding="bgr8")
+            cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+        except Exception as e:
+            self.get_logger().error(f"[TRACKING] Error al convertir la imagen: {e}")
+            return
+
 
         # parse detections
         detection_list = []

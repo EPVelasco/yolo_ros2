@@ -325,13 +325,21 @@ class YoloNode(LifecycleNode):
         return keypoints_list
 
     def image_cb(self, msg: Image) -> None:
-
         if self.enable:
+            if msg.encoding == '8UC3':
+                #self.get_logger().warn('[YOLO] encoding 8UC3 detectado. Forzando a bgr8.')
+                msg.encoding = 'bgr8'
 
-            # convert image + predict
-            cv_image = self.cv_bridge.imgmsg_to_cv2(
-                msg, desired_encoding=self.yolo_encoding
-            )
+            try:
+                cv_image = self.cv_bridge.imgmsg_to_cv2(
+                    msg, desired_encoding=self.yolo_encoding
+                )
+            except Exception as e:
+               # self.get_logger().error(f'[YOLO] FALLO en imgmsg_to_cv2: {e}')
+                return
+
+           # self.get_logger().info(f"[YOLO] Imagen convertida correctamente: {cv_image.shape}")
+
             results = self.yolo.predict(
                 source=cv_image,
                 verbose=False,

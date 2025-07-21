@@ -331,7 +331,17 @@ class DebugNode(LifecycleNode):
         return marker
 
     def detections_cb(self, img_msg: Image, detection_msg: DetectionArray) -> None:
-        cv_image = self.cv_bridge.imgmsg_to_cv2(img_msg, desired_encoding="bgr8")
+       # cv_image = self.cv_bridge.imgmsg_to_cv2(img_msg, desired_encoding="bgr8")
+        if img_msg.encoding == '8UC3':
+            #self.get_logger().warn("[DEBUG] encoding 8UC3 detectado. Forzando a bgr8.")
+            img_msg.encoding = 'bgr8'
+
+        try:
+            cv_image = self.cv_bridge.imgmsg_to_cv2(img_msg, desired_encoding="bgr8")
+        except Exception as e:
+            self.get_logger().error(f"[DEBUG] Error al convertir imagen: {e}")
+            return
+
         bb_marker_array = MarkerArray()
         kp_marker_array = MarkerArray()
 

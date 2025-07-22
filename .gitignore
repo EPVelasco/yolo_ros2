@@ -1,3 +1,9 @@
 .vscode
 __pycache__
 yolo_ws/src/yolo_ros2/last.pt
+yolo_ws/src/yolo_ros2/yolo12x.pt
+.gitignore
+yolo_ws/src/yolo_ros2/yolo11x-seg.pt
+yolo_ws/src/yolo_ros2/last_v11.pt
+.gitignore
+yolo_ws/src/yolo_ros2/last_v8.pt

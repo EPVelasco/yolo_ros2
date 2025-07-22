@@ -12,7 +12,7 @@ OPTIONS="--shm-size=1g --privileged --ulimit memlock=-1 --ulimit stack=67108864 
 ENV_VARS="--env=\"DISPLAY\" --env=\"QT_X11_NO_MITSHM=1\"" # si se tiene problemas en interfaz esto poner en docker 
 VOLUMES="-v /tmp/.X11-unix:/tmp/.X11-unix:rw -v /dev:/dev"
 DEVICES="--device=/dev/video0 --device=/dev/video1 --device=/dev/input/js0"
-SHARED_PATH="-v ./ros2_ws/src/:/$USER/ros2_ws/src"
+SHARED_PATH="-v ./yolo_ws/src/:/$USER/yolo_ws/src/"
 
 # Función para mostrar la ayuda
 function show_help() {
